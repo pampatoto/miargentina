@@ -1,1 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Iniciar Sesión</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        body { font-family: -apple-system, sans-serif; background-color: #f2f2f2; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-container { background: white; padding: 30px; border-radius: 15px; width: 80%; max-width: 300px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background-color: #007aff; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+        button:hover { background-color: #005bb5; }
+        h2 { color: #333; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Ingresar</h2>
+        <input type="email" id="email" placeholder="Correo electrónico">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button onclick="login()">Iniciar Sesión</button>
+        <p id="error-msg" style="color: red; font-size: 12px;"></p>
+    </div>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // PEGA AQUÍ TU CONFIGURACIÓN DE FIREBASE (Lo que guardaste en el bloc de notas)
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_PROYECTO.firebaseapp.com",
+            projectId: "TU_PROYECTO",
+            storageBucket: "TU_PROYECTO.appspot.com",
+            messagingSenderId: "NUMEROS",
+            appId: "NUMEROS"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.login = function() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Login exitoso, vamos al DNI
+                window.location.href = "home.html";
+            })
+            .catch((error) => {
+                document.getElementById('error-msg').innerText = "Error: " + error.message;
+            });
+        }
+    </script>
+</body>
+</html>
